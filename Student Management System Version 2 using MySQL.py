@@ -50,10 +50,8 @@ def delete_program_or_college(table_name, code_column, code_to_delete):
     try:
         if table_name == "program":
             # Check if this program is assigned to any student
-            cursor.execute("SELECT * FROM student WHERE program_code = %s", (code_to_delete,))
-            if cursor.fetchone():
-                messagebox.showerror("Error", f"Cannot delete {code_to_delete} as it is assigned to a student.")
-                return
+            cursor.execute("UPDATE student SET program_code = NULL WHERE program_code = %s", (code_to_delete,))
+            
         elif table_name == "college":
             cursor.execute("SELECT * FROM program WHERE college_code = %s", (code_to_delete,))
             if cursor.fetchone():
